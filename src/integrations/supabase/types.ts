@@ -14,16 +14,317 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      accounts: {
+        Row: {
+          account_name: string
+          account_type: string
+          balance: number
+          created_at: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          account_name: string
+          account_type: string
+          balance?: number
+          created_at?: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          account_name?: string
+          account_type?: string
+          balance?: number
+          created_at?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      complaints: {
+        Row: {
+          assigned_to: string | null
+          created_at: string
+          description: string
+          id: string
+          status: Database["public"]["Enums"]["complaint_status"]
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          status?: Database["public"]["Enums"]["complaint_status"]
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          status?: Database["public"]["Enums"]["complaint_status"]
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      complex_stats: {
+        Row: {
+          id: string
+          sold_units: number
+          total_owners: number
+          total_residents: number
+          total_tenants: number
+          total_units: number
+          unsold_units: number
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          sold_units?: number
+          total_owners?: number
+          total_residents?: number
+          total_tenants?: number
+          total_units?: number
+          unsold_units?: number
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          sold_units?: number
+          total_owners?: number
+          total_residents?: number
+          total_tenants?: number
+          total_units?: number
+          unsold_units?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      documents: {
+        Row: {
+          category: string | null
+          created_at: string
+          file_path: string
+          file_size: number | null
+          filename: string
+          id: string
+          mime_type: string | null
+          uploaded_by: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          file_path: string
+          file_size?: number | null
+          filename: string
+          id?: string
+          mime_type?: string | null
+          uploaded_by: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          file_path?: string
+          file_size?: number | null
+          filename?: string
+          id?: string
+          mime_type?: string | null
+          uploaded_by?: string
+        }
+        Relationships: []
+      }
+      income_expenses: {
+        Row: {
+          created_at: string
+          expense: number
+          id: string
+          income: number
+          month: string
+          per_unit_cost: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          expense?: number
+          id?: string
+          income?: number
+          month: string
+          per_unit_cost?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          expense?: number
+          id?: string
+          income?: number
+          month?: string
+          per_unit_cost?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ledger_entries: {
+        Row: {
+          account_id: string | null
+          created_at: string
+          credit: number
+          debit: number
+          description: string | null
+          entry_class: string
+          entry_date: string
+          id: string
+        }
+        Insert: {
+          account_id?: string | null
+          created_at?: string
+          credit?: number
+          debit?: number
+          description?: string | null
+          entry_class: string
+          entry_date?: string
+          id?: string
+        }
+        Update: {
+          account_id?: string | null
+          created_at?: string
+          credit?: number
+          debit?: number
+          description?: string | null
+          entry_class?: string
+          entry_date?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ledger_entries_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      meetings: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          id: string
+          location: string | null
+          meeting_date: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string | null
+          id?: string
+          location?: string | null
+          meeting_date: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          id?: string
+          location?: string | null
+          meeting_date?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      notices: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string
+          id: string
+          is_urgent: boolean
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description: string
+          id?: string
+          is_urgent?: boolean
+          title: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string
+          id?: string
+          is_urgent?: boolean
+          title?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string
+          id: string
+          is_approved: boolean
+          phone: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          unit_number: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          full_name: string
+          id: string
+          is_approved?: boolean
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          unit_number?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string
+          id?: string
+          is_approved?: boolean
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          unit_number?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_role: {
+        Args: { user_id: string }
+        Returns: Database["public"]["Enums"]["user_role"]
+      }
+      has_role: {
+        Args: {
+          required_role: Database["public"]["Enums"]["user_role"]
+          user_id: string
+        }
+        Returns: boolean
+      }
+      is_admin: {
+        Args: { user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      complaint_status: "open" | "in_progress" | "resolved" | "closed"
+      user_role: "admin" | "owner" | "tenant" | "accountant"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +451,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      complaint_status: ["open", "in_progress", "resolved", "closed"],
+      user_role: ["admin", "owner", "tenant", "accountant"],
+    },
   },
 } as const
