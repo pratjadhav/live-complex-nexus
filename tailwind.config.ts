@@ -61,6 +61,23 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				dashboard: {
+					'cash-bank': 'hsl(var(--cash-bank))',
+					'income': 'hsl(var(--income))',
+					'expense': 'hsl(var(--expense))',
+					'total-units': 'hsl(var(--total-units))',
+					'units-unsold': 'hsl(var(--units-unsold))',
+					'units-sold': 'hsl(var(--units-sold))',
+					'owners': 'hsl(var(--owners))',
+					'tenants': 'hsl(var(--tenants))',
+					'residents-1': 'hsl(var(--residents-1))',
+					'residents-2': 'hsl(var(--residents-2))',
+					'residents-3': 'hsl(var(--residents-3))',
+				},
+				header: {
+					DEFAULT: 'hsl(var(--header-background))',
+					foreground: 'hsl(var(--header-foreground))'
 				}
 			},
 			borderRadius: {

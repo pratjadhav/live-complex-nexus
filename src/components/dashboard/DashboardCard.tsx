@@ -23,17 +23,17 @@ export const DashboardCard = ({
   className 
 }: DashboardCardProps) => {
   return (
-    <Card className={cn("transition-all hover:shadow-md", className)}>
+    <Card className={cn("transition-all hover:shadow-lg relative overflow-hidden", className)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">
+        <CardTitle className="text-sm font-medium text-current">
           {title}
         </CardTitle>
-        <Icon className="h-4 w-4 text-muted-foreground" />
+        <Icon className="h-5 w-5 text-current opacity-80" />
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
+        <div className="text-3xl font-bold text-current">{value}</div>
         {description && (
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-xs text-current opacity-80 mt-1">
             {description}
           </p>
         )}
@@ -49,6 +49,20 @@ export const DashboardCard = ({
               {trend.isUp ? "↗" : "↘"}
             </span>
             {Math.abs(trend.value)}% from last month
+          </div>
+        )}
+        
+        {/* Live indicator for income card */}
+        {title === "Monthly Income" && (
+          <div className="absolute top-2 right-12">
+            <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium">LIVE</span>
+          </div>
+        )}
+        
+        {/* Live indicator for expense card */}
+        {title === "Monthly Expenses" && (
+          <div className="absolute top-2 right-12">
+            <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium">LIVE</span>
           </div>
         )}
       </CardContent>
