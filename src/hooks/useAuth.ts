@@ -69,9 +69,17 @@ export const useAuth = () => {
       if (error) throw error;
       toast({ title: "Signed in successfully" });
     } catch (error: any) {
+      let errorMessage = error.message;
+      let errorTitle = "Error signing in";
+      
+      if (error.message === "Email not confirmed") {
+        errorTitle = "Email Not Confirmed";
+        errorMessage = "Please check your email and click the confirmation link before signing in. Check your spam folder if you don't see it.";
+      }
+      
       toast({ 
-        title: "Error signing in", 
-        description: error.message,
+        title: errorTitle, 
+        description: errorMessage,
         variant: "destructive" 
       });
       throw error;
@@ -84,6 +92,7 @@ export const useAuth = () => {
         email,
         password,
         options: {
+          emailRedirectTo: `${window.location.origin}/`,
           data: {
             full_name: fullName,
             role: role,
@@ -93,7 +102,7 @@ export const useAuth = () => {
       if (error) throw error;
       toast({ 
         title: "Registration successful", 
-        description: "Please wait for admin approval to access the system." 
+        description: "Please check your email and click the confirmation link to complete registration." 
       });
     } catch (error: any) {
       toast({ 
