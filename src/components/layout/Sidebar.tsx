@@ -1,6 +1,6 @@
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { 
   Home, 
   User, 
@@ -53,9 +53,12 @@ export const Sidebar = () => {
                   ? 'bg-sidebar-accent text-sidebar-accent-foreground' 
                   : 'text-sidebar-foreground hover:bg-sidebar-border hover:text-sidebar-foreground'
               }`}
+              asChild
             >
-              <item.icon className="h-5 w-5" />
-              {item.label}
+              <Link to={item.href}>
+                <item.icon className="h-5 w-5" />
+                {item.label}
+              </Link>
             </Button>
           );
         })}
