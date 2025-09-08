@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { DollarSign, TrendingUp, TrendingDown, PieChart, FileText, Calendar, CreditCard, AlertCircle } from 'lucide-react';
 
 export const Accounting = () => {
@@ -197,25 +198,35 @@ export const Accounting = () => {
                   <CardDescription>Upcoming payment obligations</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
-                    {pendingPayments.map((payment, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <p className="font-medium text-sm">{payment.vendor}</p>
-                          <p className="text-xs text-muted-foreground">
-                            Due: {payment.dueDate} • {payment.category}
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-bold">{formatCurrency(payment.amount)}</p>
-                          <Button size="sm" variant="outline" className="mt-1">
-                            <CreditCard className="w-3 h-3 mr-1" />
-                            Pay
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Vendor</TableHead>
+                        <TableHead>Category</TableHead>
+                        <TableHead>Due Date</TableHead>
+                        <TableHead className="text-right">Amount</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {pendingPayments.map((payment, index) => (
+                        <TableRow key={index}>
+                          <TableCell className="font-medium">{payment.vendor}</TableCell>
+                          <TableCell>
+                            <Badge variant="outline">{payment.category}</Badge>
+                          </TableCell>
+                          <TableCell>{payment.dueDate}</TableCell>
+                          <TableCell className="text-right font-bold">{formatCurrency(payment.amount)}</TableCell>
+                          <TableCell className="text-right">
+                            <Button size="sm" variant="outline">
+                              <CreditCard className="w-3 h-3 mr-1" />
+                              Pay
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </CardContent>
               </Card>
             </div>
@@ -228,43 +239,55 @@ export const Accounting = () => {
                 <CardDescription>Latest financial activities</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  {recentTransactions.map((transaction) => (
-                    <div key={transaction.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <div className={`p-2 rounded-full ${
-                          transaction.type === 'income' 
-                            ? 'bg-green-100 dark:bg-green-900' 
-                            : 'bg-red-100 dark:bg-red-900'
-                        }`}>
-                          {transaction.type === 'income' ? (
-                            <TrendingUp className="w-4 h-4 text-green-600" />
-                          ) : (
-                            <TrendingDown className="w-4 h-4 text-red-600" />
-                          )}
-                        </div>
-                        <div>
-                          <p className="font-medium">{transaction.description}</p>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Calendar className="w-3 h-3" />
-                            {transaction.date}
-                            <Badge variant="outline">{transaction.category}</Badge>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Description</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Category</TableHead>
+                      <TableHead className="text-right">Amount</TableHead>
+                      <TableHead>Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {recentTransactions.map((transaction) => (
+                      <TableRow key={transaction.id}>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <div className={`p-1 rounded-full ${
+                              transaction.type === 'income' 
+                                ? 'bg-green-100 dark:bg-green-900' 
+                                : 'bg-red-100 dark:bg-red-900'
+                            }`}>
+                              {transaction.type === 'income' ? (
+                                <TrendingUp className="w-3 h-3 text-green-600" />
+                              ) : (
+                                <TrendingDown className="w-3 h-3 text-red-600" />
+                              )}
+                            </div>
+                            <span className="capitalize font-medium">{transaction.type}</span>
                           </div>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className={`font-bold ${
+                        </TableCell>
+                        <TableCell className="font-medium">{transaction.description}</TableCell>
+                        <TableCell>{transaction.date}</TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{transaction.category}</Badge>
+                        </TableCell>
+                        <TableCell className={`text-right font-bold ${
                           transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
                         }`}>
                           {transaction.type === 'income' ? '+' : '-'}{formatCurrency(transaction.amount)}
-                        </p>
-                        <Badge variant={transaction.status === 'completed' ? 'default' : 'secondary'}>
-                          {transaction.status}
-                        </Badge>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={transaction.status === 'completed' ? 'default' : 'secondary'}>
+                            {transaction.status}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </CardContent>
             </Card>
           </TabsContent>

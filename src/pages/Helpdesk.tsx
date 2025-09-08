@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { HelpCircle, Plus, Search, Filter, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
 
 export const Helpdesk = () => {
@@ -123,30 +124,59 @@ export const Helpdesk = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {tickets.map((ticket) => (
-                    <div key={ticket.id} className="border rounded-lg p-4 hover:bg-accent/50 transition-colors">
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          {getStatusIcon(ticket.status)}
-                          <span className="font-medium">{ticket.id}</span>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Ticket ID</TableHead>
+                      <TableHead>Title</TableHead>
+                      <TableHead>Category</TableHead>
+                      <TableHead>Priority</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Submitted By</TableHead>
+                      <TableHead>Assigned To</TableHead>
+                      <TableHead>Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {tickets.map((ticket) => (
+                      <TableRow key={ticket.id}>
+                        <TableCell className="font-medium">{ticket.id}</TableCell>
+                        <TableCell>
+                          <div>
+                            <p className="font-medium">{ticket.title}</p>
+                            <p className="text-xs text-muted-foreground line-clamp-1">{ticket.description}</p>
+                          </div>
+                        </TableCell>
+                        <TableCell>
                           <Badge variant="outline">{ticket.category}</Badge>
-                        </div>
-                        <Badge 
-                          variant={ticket.priority === 'high' ? 'destructive' : ticket.priority === 'medium' ? 'default' : 'secondary'}
-                        >
-                          {ticket.priority}
-                        </Badge>
-                      </div>
-                      <h4 className="font-medium mb-1">{ticket.title}</h4>
-                      <p className="text-sm text-muted-foreground mb-2">{ticket.description}</p>
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>By {ticket.submittedBy} on {ticket.submittedDate}</span>
-                        <span>Assigned to {ticket.assignedTo}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge 
+                            variant={ticket.priority === 'high' ? 'destructive' : ticket.priority === 'medium' ? 'default' : 'secondary'}
+                          >
+                            {ticket.priority}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            {getStatusIcon(ticket.status)}
+                            <span className="capitalize">{ticket.status}</span>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div>
+                            <p className="font-medium">{ticket.submittedBy}</p>
+                            <p className="text-xs text-muted-foreground">{ticket.submittedDate}</p>
+                          </div>
+                        </TableCell>
+                        <TableCell>{ticket.assignedTo}</TableCell>
+                        <TableCell>
+                          <Button variant="outline" size="sm">View</Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </CardContent>
             </Card>
           </div>

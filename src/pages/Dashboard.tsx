@@ -13,6 +13,8 @@ import {
   UserCheck
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
 
 interface Account {
   id: string;
@@ -170,14 +172,26 @@ export const Dashboard = () => {
             <CardTitle>Account Balances</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {accounts.map(account => (
-                <div key={account.id} className="p-4 border rounded-lg">
-                  <h3 className="font-medium">{account.account_name}</h3>
-                  <p className="text-2xl font-bold">₹{account.balance.toLocaleString()}</p>
-                </div>
-              ))}
-            </div>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Account Name</TableHead>
+                  <TableHead className="text-right">Balance</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {accounts.map(account => (
+                  <TableRow key={account.id}>
+                    <TableCell className="font-medium">{account.account_name}</TableCell>
+                    <TableCell className="text-right">₹{account.balance.toLocaleString()}</TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="outline" size="sm">View</Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
       )}

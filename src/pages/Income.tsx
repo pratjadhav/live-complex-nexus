@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { TrendingUp, DollarSign, Plus, Calendar, Filter, Search, Eye, Download } from 'lucide-react';
 
 export const Income = () => {
@@ -279,32 +280,36 @@ export const Income = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  {recentCollections.map((collection) => (
-                    <div key={collection.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 rounded-full bg-green-100 dark:bg-green-900">
-                          <DollarSign className="w-4 h-4 text-green-600" />
-                        </div>
-                        <div>
-                          <p className="font-medium">{collection.payer}</p>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Calendar className="w-3 h-3" />
-                            {collection.date}
-                            <Badge variant="outline">{collection.type}</Badge>
-                            <span>via {collection.method}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-bold text-green-600">+{formatCurrency(collection.amount)}</p>
-                        <Badge variant={collection.status === 'received' ? 'default' : 'secondary'}>
-                          {collection.status}
-                        </Badge>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Payer</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Method</TableHead>
+                      <TableHead className="text-right">Amount</TableHead>
+                      <TableHead>Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {recentCollections.map((collection) => (
+                      <TableRow key={collection.id}>
+                        <TableCell className="font-medium">{collection.payer}</TableCell>
+                        <TableCell>{collection.date}</TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{collection.type}</Badge>
+                        </TableCell>
+                        <TableCell>{collection.method}</TableCell>
+                        <TableCell className="text-right font-bold text-green-600">+{formatCurrency(collection.amount)}</TableCell>
+                        <TableCell>
+                          <Badge variant={collection.status === 'received' ? 'default' : 'secondary'}>
+                            {collection.status}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </CardContent>
             </Card>
           </TabsContent>
@@ -319,33 +324,47 @@ export const Income = () => {
                 <CardDescription>Pending dues from residents</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  {outstandingPayments.map((payment, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div>
-                        <p className="font-medium">{payment.flat} - {payment.resident}</p>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Flat</TableHead>
+                      <TableHead>Resident</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Due Date</TableHead>
+                      <TableHead>Days Overdue</TableHead>
+                      <TableHead className="text-right">Amount</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {outstandingPayments.map((payment, index) => (
+                      <TableRow key={index}>
+                        <TableCell className="font-medium">{payment.flat}</TableCell>
+                        <TableCell>{payment.resident}</TableCell>
+                        <TableCell>
                           <Badge variant="outline">{payment.type}</Badge>
-                          <span>Due: {payment.dueDate}</span>
+                        </TableCell>
+                        <TableCell>{payment.dueDate}</TableCell>
+                        <TableCell>
                           <Badge variant={payment.days > 7 ? 'destructive' : 'secondary'}>
                             {payment.days} days {payment.days > 0 ? 'overdue' : 'remaining'}
                           </Badge>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-bold text-red-600">{formatCurrency(payment.amount)}</p>
-                        <div className="flex gap-1 mt-1">
-                          <Button size="sm" variant="outline">
-                            <Eye className="w-3 h-3" />
-                          </Button>
-                          <Button size="sm">
-                            Send Reminder
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                        </TableCell>
+                        <TableCell className="text-right font-bold text-red-600">{formatCurrency(payment.amount)}</TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex gap-1 justify-end">
+                            <Button size="sm" variant="outline">
+                              <Eye className="w-3 h-3" />
+                            </Button>
+                            <Button size="sm">
+                              Send Reminder
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </CardContent>
             </Card>
           </TabsContent>

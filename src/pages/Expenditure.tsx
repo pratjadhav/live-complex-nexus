@@ -2,6 +2,7 @@ import { MainLayout } from '@/components/layout/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { TrendingDown, DollarSign, Plus, Calendar, AlertTriangle } from 'lucide-react';
 
 export const Expenditure = () => {
@@ -68,22 +69,36 @@ export const Expenditure = () => {
             <CardTitle>Recent Expenses</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-3">
-              {expenses.map((expense) => (
-                <div key={expense.id} className="flex items-center justify-between p-4 border rounded-lg">
-                  <div>
-                    <p className="font-medium">{expense.description}</p>
-                    <p className="text-sm text-muted-foreground">{expense.vendor} • {expense.date}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-bold text-red-600">₹{expense.amount.toLocaleString()}</p>
-                    <Badge variant={expense.status === 'paid' ? 'default' : 'secondary'}>
-                      {expense.status}
-                    </Badge>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Description</TableHead>
+                  <TableHead>Vendor</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead className="text-right">Amount</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {expenses.map((expense) => (
+                  <TableRow key={expense.id}>
+                    <TableCell className="font-medium">{expense.description}</TableCell>
+                    <TableCell>{expense.vendor}</TableCell>
+                    <TableCell>{expense.date}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline">{expense.category}</Badge>
+                    </TableCell>
+                    <TableCell className="text-right font-bold text-red-600">₹{expense.amount.toLocaleString()}</TableCell>
+                    <TableCell>
+                      <Badge variant={expense.status === 'paid' ? 'default' : 'secondary'}>
+                        {expense.status}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
       </div>
