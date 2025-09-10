@@ -59,142 +59,192 @@ export const Dashboard = () => {
   const { data: accounts } = useRealTimeData('accounts');
   const { data: incomeExpenses } = useRealTimeData('income_expenses');
   const { data: complexStats } = useRealTimeData('complex_stats');
-  const { data: complaints } = useRealTimeData('complaints');
-  const { data: notices } = useRealTimeData('notices');
 
-  const totalBalance = accounts.reduce((sum, account) => sum + account.balance, 0);
-  const currentMonth = incomeExpenses[0] || { income: 0, expense: 0, per_unit_cost: 0 };
   const stats = complexStats[0] || { 
-    total_units: 0, 
+    total_units: 36, 
     sold_units: 0, 
     unsold_units: 0, 
-    total_owners: 0, 
+    total_owners: 4, 
     total_tenants: 0, 
-    total_residents: 0 
+    total_residents: 3 
   };
-  const pendingComplaints = complaints.filter(c => c.status === 'open').length;
-  const recentNotices = notices.slice(0, 3);
+
+  // Mock data for recent months
+  const recentMonths = [
+    { month: 'June', income: 0, expenses: 0 },
+    { month: 'July', income: 0, expenses: 0 },
+    { month: 'August', income: 0, expenses: 0 }
+  ];
+
+  // Mock General Ledger data
+  const generalLedgerData = [
+    { class: 'Assets', credit: 1996228.00, debit: 1988013.00 },
+    { class: 'Liabilities', credit: 49641.00, debit: 48040.00 },
+    { class: 'Revenues', credit: 665040.00, debit: 0.00 }
+  ];
 
   return (
     <div className="p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <h1 className="text-3xl font-bold">Real-Time Dashboard</h1>
-          <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full font-medium">LIVE</span>
-        </div>
-        <p className="text-muted-foreground">Welcome back, {profile?.full_name}</p>
-      </div>
-
-      {/* Top Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <DashboardCard
-          title="Cash & Bank Balances"
-          value={`₹${totalBalance.toLocaleString()}`}
-          icon={DollarSign}
-          description={`Bank: ₹${totalBalance.toLocaleString()} | LAST UPDATED: NOW`}
-          className="bg-dashboard-cash-bank text-white border-none"
-        />
-        
-        <DashboardCard
-          title="Monthly Income"
-          value={`₹${currentMonth.income.toLocaleString()}`}
-          icon={TrendingUp}
-          description={`PER-UNIT COST: ₹${currentMonth.per_unit_cost.toLocaleString()}`}
-          className="bg-dashboard-income text-white border-none relative"
-        />
-        
-        <DashboardCard
-          title="Monthly Expenses"
-          value={`₹${currentMonth.expense.toLocaleString()}`}
-          icon={TrendingDown}
-          description="Current month expenses"
-          className="bg-dashboard-expense text-white border-none relative"
-        />
-      </div>
-
-      {/* Complex Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        <DashboardCard
-          title="Total Units"
-          value={stats.total_units}
-          icon={Building}
-          description="Units Unsold"
-          className="bg-dashboard-total-units text-white border-none"
-        />
-        
-        <DashboardCard
-          title="Units Unsold"
-          value={stats.unsold_units}
-          icon={Building}
-          className="bg-dashboard-units-unsold text-white border-none"
-        />
-        
-        <DashboardCard
-          title="Units Sold"
-          value={stats.sold_units}
-          icon={UserCheck}
-          className="bg-dashboard-units-sold text-white border-none"
-        />
-        
-        <DashboardCard
-          title="Owners"
-          value={stats.total_owners}
-          icon={Users}
-          className="bg-dashboard-owners text-white border-none"
-        />
-        
-        <DashboardCard
-          title="Tenants"
-          value={stats.total_tenants}
-          icon={Users}
-          className="bg-dashboard-tenants text-white border-none"
-        />
-        
-        <DashboardCard
-          title="Residents"
-          value={stats.total_residents}
-          icon={Users}
-          className="bg-dashboard-residents-1 text-white border-none"
-        />
-      </div>
-
-      {/* Bottom Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <GeneralLedger />
-        <ComplaintsWidget />
-        <NoticeboardWidget />
-      </div>
-
-      {/* Account Balances */}
-      {(profile?.role === 'admin' || profile?.role === 'accountant') && (
+      {/* 2x2 Grid Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Cash & Bank Balances */}
         <Card>
-          <CardHeader>
-            <CardTitle>Account Balances</CardTitle>
+          <CardHeader className="bg-orange-500 text-white rounded-t-lg">
+            <CardTitle className="flex items-center justify-between">
+              <span>Cash & Bank Balances</span>
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+                <DollarSign className="h-4 w-4" />
+              </Button>
+            </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0">
+            <div className="p-4 text-sm text-muted-foreground">
+              For Accounting Period: 01/04/2024 - 31/03/2028
+            </div>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Account Name</TableHead>
-                  <TableHead className="text-right">Balance</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>Account</TableHead>
+                  <TableHead className="text-right">Balance (Rs)</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {accounts.map(account => (
-                  <TableRow key={account.id}>
-                    <TableCell className="font-medium">{account.account_name}</TableCell>
-                    <TableCell className="text-right">₹{account.balance.toLocaleString()}</TableCell>
-                    <TableCell className="text-right">
-                      <Button variant="outline" size="sm">View</Button>
-                    </TableCell>
+                <TableRow>
+                  <TableCell>ICICI</TableCell>
+                  <TableCell className="text-right">46,332.00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Petty Cash</TableCell>
+                  <TableCell className="text-right">519.00</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Pune District Central Co-Op Bank</TableCell>
+                  <TableCell className="text-right">6,129.00</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        {/* Income & Expenses */}
+        <Card>
+          <CardHeader className="bg-blue-500 text-white rounded-t-lg">
+            <CardTitle className="flex items-center justify-between">
+              <span>Income & Expenses</span>
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+                <TrendingUp className="h-4 w-4" />
+              </Button>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4">
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <p className="text-sm font-medium">Total Units: <span className="font-bold">36</span></p>
+              </div>
+              <div>
+                <p className="text-sm font-medium">Total Area Under Maintenance:</p>
+                <p className="font-bold">36,000.00 Sft</p>
+              </div>
+            </div>
+            <div className="text-sm text-muted-foreground mb-2">Last 3 months</div>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Month</TableHead>
+                  <TableHead className="text-right">Income (Rs)</TableHead>
+                  <TableHead className="text-right">Expenses (Rs)</TableHead>
+                  <TableHead className="text-right">Exp. / Unit (Rs)</TableHead>
+                  <TableHead className="text-right">Exp. / Sft (Rs)</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {recentMonths.map((month) => (
+                  <TableRow key={month.month}>
+                    <TableCell>{month.month}</TableCell>
+                    <TableCell className="text-right">{month.income.toFixed(2)}</TableCell>
+                    <TableCell className="text-right">{month.expenses.toFixed(2)}</TableCell>
+                    <TableCell className="text-right">-</TableCell>
+                    <TableCell className="text-right">-</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </CardContent>
         </Card>
-      )}
+
+        {/* General Ledger */}
+        <Card>
+          <CardHeader className="bg-green-500 text-white rounded-t-lg">
+            <CardTitle className="flex items-center justify-between">
+              <span>General Ledger</span>
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+                <Building className="h-4 w-4" />
+              </Button>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="p-4 text-sm text-muted-foreground">
+              For Accounting Period: 01/04/2024 - 31/03/2028
+            </div>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Class</TableHead>
+                  <TableHead className="text-right">Credit</TableHead>
+                  <TableHead className="text-right">Debit</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {generalLedgerData.map((item) => (
+                  <TableRow key={item.class}>
+                    <TableCell className="font-medium">{item.class}</TableCell>
+                    <TableCell className="text-right">{item.credit.toLocaleString()}</TableCell>
+                    <TableCell className="text-right">{item.debit.toLocaleString()}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        {/* My Complex */}
+        <Card>
+          <CardHeader className="bg-orange-500 text-white rounded-t-lg">
+            <CardTitle className="flex items-center justify-between">
+              <span>My Complex</span>
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+                <Building className="h-4 w-4" />
+              </Button>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4 space-y-3">
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Total Number of Units:</span>
+              <span className="font-bold">{stats.total_units}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Total Number of Units Sold:</span>
+              <span className="font-bold">{stats.sold_units}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Total Number of Units Unsold:</span>
+              <span className="font-bold">{stats.unsold_units}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Units with Members:</span>
+              <span className="font-bold">{stats.total_residents}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Total Number of Owners:</span>
+              <span className="font-bold">{stats.total_owners}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Total Number of Tenants:</span>
+              <span className="font-bold">{stats.total_tenants}</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
