@@ -62,52 +62,52 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				dashboard: {
-					'cash-bank': 'hsl(var(--cash-bank))',
-					'income': 'hsl(var(--income))',
-					'expense': 'hsl(var(--expense))',
-					'total-units': 'hsl(var(--total-units))',
-					'units-unsold': 'hsl(var(--units-unsold))',
-					'units-sold': 'hsl(var(--units-sold))',
-					'owners': 'hsl(var(--owners))',
-					'tenants': 'hsl(var(--tenants))',
-					'residents-1': 'hsl(var(--residents-1))',
-					'residents-2': 'hsl(var(--residents-2))',
-					'residents-3': 'hsl(var(--residents-3))',
-				},
 				header: {
 					DEFAULT: 'hsl(var(--header-background))',
 					foreground: 'hsl(var(--header-foreground))'
-				}
+				},
 			},
-			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
-			},
-			keyframes: {
-				'accordion-down': {
-					from: {
-						height: '0'
+			extend: {
+				colors: {
+					blue: {
+						50: '#eff6ff',
+						100: '#dbeafe',
+						200: '#bfdbfe',
+						300: '#93c5fd',
+						400: '#60a5fa',
+						500: '#3b82f6',
+						600: '#2563eb',
+						700: '#1d4ed8',
+						800: '#1e40af',
+						900: '#1e3a8a',
 					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
+				},
+				borderRadius: {
+					lg: 'var(--radius)',
+					md: 'calc(var(--radius) - 2px)',
+					sm: 'calc(var(--radius) - 4px)'
+				},
+				keyframes: {
+					'accordion-down': {
+						from: {
+							height: '0'
+						},
+						to: {
+							height: 'var(--radix-accordion-content-height)'
+						}
+					},
+					'accordion-up': {
+						from: {
+							height: '0'
+						}
 					}
 				},
-				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
+				animation: {
+					'accordion-down': 'accordion-down 0.2s ease-out',
+					'accordion-up': 'accordion-up 0.2s ease-out'
 				}
 			},
-			animation: {
-				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
-		}
+		},
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [require("tailwindcss-animate")]
 } satisfies Config;

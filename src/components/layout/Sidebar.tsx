@@ -40,7 +40,7 @@ export const Sidebar = () => {
   const location = useLocation();
 
   return (
-    <div className="w-64 h-full bg-sidebar text-sidebar-foreground flex flex-col">
+    <div className="w-64 h-full bg-sidebar text-sidebar-foreground flex flex-col  overflow-y-auto">
       <nav className="flex-1 space-y-1 p-4">
         {menuItems.map((item) => {
           const isActive = location.pathname === item.href;
