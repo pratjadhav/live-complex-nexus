@@ -2,45 +2,37 @@ import { MainLayout } from '@/components/layout/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { FileText, Upload, Download, Search, Filter, Folder, Eye, Trash2, Share2, Calendar } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { FileText, Upload, Download, Folder, Calendar } from 'lucide-react';
 
 export const Repository = () => {
   const documents = [
     {
       id: 1,
       name: "Society Bylaws 2024",
-      type: "PDF",
+      type: "PDF", 
       size: "2.4 MB",
       category: "Legal",
       uploadDate: "2024-01-01",
-      uploadedBy: "Admin",
-      downloads: 45,
-      isPublic: true
+      downloadCount: 45
     },
     {
       id: 2,
       name: "Annual Budget Report 2023",
       type: "Excel",
-      size: "1.8 MB",
+      size: "1.8 MB", 
       category: "Financial",
       uploadDate: "2023-12-15",
-      uploadedBy: "Treasurer",
-      downloads: 23,
-      isPublic: true
+      downloadCount: 23
     },
     {
       id: 3,
       name: "Maintenance Schedule Q1 2024",
       type: "PDF",
       size: "856 KB",
-      category: "Maintenance",
+      category: "Maintenance", 
       uploadDate: "2024-01-10",
-      uploadedBy: "Maintenance Head",
-      downloads: 12,
-      isPublic: false
+      downloadCount: 12
     },
     {
       id: 4,
@@ -49,41 +41,15 @@ export const Repository = () => {
       size: "456 KB",
       category: "Meetings",
       uploadDate: "2023-12-20",
-      uploadedBy: "Secretary",
-      downloads: 34,
-      isPublic: true
-    },
-    {
-      id: 5,
-      name: "Fire Safety Guidelines",
-      type: "PDF",
-      size: "3.2 MB",
-      category: "Safety",
-      uploadDate: "2023-11-15",
-      uploadedBy: "Safety Officer",
-      downloads: 67,
-      isPublic: true
-    },
-    {
-      id: 6,
-      name: "Vendor Contact List",
-      type: "Excel",
-      size: "124 KB",
-      category: "Administrative",
-      uploadDate: "2024-01-05",
-      uploadedBy: "Admin",
-      downloads: 18,
-      isPublic: false
+      downloadCount: 34
     }
   ];
 
   const folders = [
-    { name: "Legal Documents", count: 15, lastUpdated: "2024-01-01" },
-    { name: "Financial Reports", count: 23, lastUpdated: "2024-01-10" },
-    { name: "Meeting Minutes", count: 45, lastUpdated: "2023-12-20" },
-    { name: "Maintenance Records", count: 34, lastUpdated: "2024-01-12" },
-    { name: "Safety & Security", count: 12, lastUpdated: "2023-11-15" },
-    { name: "Administrative", count: 28, lastUpdated: "2024-01-05" }
+    { name: "Legal Documents", count: 15, size: "45.2 MB" },
+    { name: "Financial Reports", count: 23, size: "67.8 MB" },
+    { name: "Meeting Minutes", count: 45, size: "23.4 MB" },
+    { name: "Maintenance Records", count: 34, size: "78.9 MB" }
   ];
 
   const recentActivity = [
@@ -93,199 +59,162 @@ export const Repository = () => {
     { action: "Updated", document: "Vendor Contact List", user: "Admin", time: "2 days ago" }
   ];
 
-  const getFileIcon = (type: string) => {
-    return <FileText className="w-5 h-5 text-primary" />;
-  };
-
   return (
     <MainLayout>
       <div className="p-6 space-y-6">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold">Document Repository</h1>
-            <p className="text-muted-foreground">Centralized document management system</p>
-          </div>
-          <Button>
-            <Upload className="w-4 h-4 mr-2" />
-            Upload Document
-          </Button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {/* 2x2 Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* All Documents */}
           <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-2">
-                <FileText className="w-5 h-5 text-blue-500" />
-                <div>
-                  <p className="text-2xl font-bold">157</p>
-                  <p className="text-sm text-muted-foreground">Total Documents</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-2">
-                <Folder className="w-5 h-5 text-green-500" />
-                <div>
-                  <p className="text-2xl font-bold">6</p>
-                  <p className="text-sm text-muted-foreground">Categories</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-2">
-                <Download className="w-5 h-5 text-orange-500" />
-                <div>
-                  <p className="text-2xl font-bold">1,243</p>
-                  <p className="text-sm text-muted-foreground">Total Downloads</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center space-x-2">
-                <Upload className="w-5 h-5 text-purple-500" />
-                <div>
-                  <p className="text-2xl font-bold">23</p>
-                  <p className="text-sm text-muted-foreground">This Month</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Tabs defaultValue="documents" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="documents">Documents</TabsTrigger>
-            <TabsTrigger value="folders">Folders</TabsTrigger>
-            <TabsTrigger value="activity">Recent Activity</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="documents">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span>All Documents</span>
-                  <div className="flex items-center gap-2">
-                    <div className="relative">
-                      <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
-                      <Input placeholder="Search documents..." className="pl-10 w-64" />
-                    </div>
-                    <Select>
-                      <SelectTrigger className="w-40">
-                        <SelectValue placeholder="Category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Categories</SelectItem>
-                        <SelectItem value="legal">Legal</SelectItem>
-                        <SelectItem value="financial">Financial</SelectItem>
-                        <SelectItem value="maintenance">Maintenance</SelectItem>
-                        <SelectItem value="meetings">Meetings</SelectItem>
-                        <SelectItem value="safety">Safety</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <Button variant="outline" size="sm">
-                      <Filter className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
+            <CardHeader className="bg-blue-500 text-white rounded-t-lg">
+              <CardTitle className="flex items-center justify-between">
+                <span>All Documents</span>
+                <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+                  <FileText className="h-4 w-4" />
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Document</TableHead>
+                    <TableHead>Category</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead className="text-right">Downloads</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {documents.map((doc) => (
-                    <div key={doc.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent/50 transition-colors">
-                      <div className="flex items-center space-x-3">
-                        {getFileIcon(doc.type)}
+                    <TableRow key={doc.id}>
+                      <TableCell>
                         <div>
                           <p className="font-medium">{doc.name}</p>
-                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            <span>{doc.type} • {doc.size}</span>
-                            <Badge variant="outline">{doc.category}</Badge>
-                            <span>by {doc.uploadedBy}</span>
-                            <span>{doc.uploadDate}</span>
-                          </div>
+                          <p className="text-xs text-muted-foreground">{doc.size} • {doc.uploadDate}</p>
                         </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <div className="text-right text-sm text-muted-foreground mr-4">
-                          <div className="flex items-center gap-1">
-                            <Download className="w-3 h-3" />
-                            {doc.downloads}
-                          </div>
-                          {doc.isPublic ? (
-                            <Badge variant="secondary" className="text-xs">Public</Badge>
-                          ) : (
-                            <Badge variant="outline" className="text-xs">Private</Badge>
-                          )}
-                        </div>
-                        <Button variant="ghost" size="sm">
-                          <Eye className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm">
-                          <Download className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm">
-                          <Share2 className="w-4 h-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{doc.category}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="secondary">{doc.type}</Badge>
+                      </TableCell>
+                      <TableCell className="text-right">{doc.downloadCount}</TableCell>
+                    </TableRow>
                   ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
 
-          <TabsContent value="folders">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {folders.map((folder, index) => (
-                <Card key={index} className="hover:shadow-md transition-shadow cursor-pointer">
-                  <CardContent className="p-6">
-                    <div className="flex items-center space-x-3">
-                      <Folder className="w-8 h-8 text-primary" />
-                      <div className="flex-1">
-                        <h3 className="font-medium">{folder.name}</h3>
-                        <p className="text-sm text-muted-foreground">{folder.count} documents</p>
-                        <p className="text-xs text-muted-foreground">Updated {folder.lastUpdated}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
+          {/* Folders */}
+          <Card>
+            <CardHeader className="bg-green-500 text-white rounded-t-lg">
+              <CardTitle className="flex items-center justify-between">
+                <span>Document Folders</span>
+                <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+                  <Folder className="h-4 w-4" />
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Folder Name</TableHead>
+                    <TableHead className="text-right">Files</TableHead>
+                    <TableHead className="text-right">Size</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {folders.map((folder, index) => (
+                    <TableRow key={index}>
+                      <TableCell className="font-medium">{folder.name}</TableCell>
+                      <TableCell className="text-right">{folder.count}</TableCell>
+                      <TableCell className="text-right">{folder.size}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
 
-          <TabsContent value="activity">
-            <Card>
-              <CardHeader>
-                <CardTitle>Recent Activity</CardTitle>
-                <CardDescription>Latest document activities in the repository</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+          {/* Recent Activity */}
+          <Card>
+            <CardHeader className="bg-orange-500 text-white rounded-t-lg">
+              <CardTitle className="flex items-center justify-between">
+                <span>Recent Activity</span>
+                <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+                  <Calendar className="h-4 w-4" />
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Action</TableHead>
+                    <TableHead>Document</TableHead>
+                    <TableHead>User</TableHead>
+                    <TableHead className="text-right">Time</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                   {recentActivity.map((activity, index) => (
-                    <div key={index} className="flex items-center space-x-3 p-3 border rounded-lg">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <div className="flex-1">
-                        <p className="text-sm">
-                          <span className="font-medium">{activity.user}</span> {activity.action.toLowerCase()} 
-                          <span className="font-medium"> "{activity.document}"</span>
-                        </p>
-                        <p className="text-xs text-muted-foreground">{activity.time}</p>
-                      </div>
-                    </div>
+                    <TableRow key={index}>
+                      <TableCell>
+                        <Badge variant={activity.action === 'Uploaded' ? 'default' : activity.action === 'Downloaded' ? 'secondary' : 'outline'}>
+                          {activity.action}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="font-medium">{activity.document}</TableCell>
+                      <TableCell>{activity.user}</TableCell>
+                      <TableCell className="text-right text-muted-foreground">{activity.time}</TableCell>
+                    </TableRow>
                   ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+
+          {/* Repository Stats */}
+          <Card>
+            <CardHeader className="bg-purple-500 text-white rounded-t-lg">
+              <CardTitle className="flex items-center justify-between">
+                <span>Repository Statistics</span>
+                <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+                  <Upload className="h-4 w-4" />
+                </Button>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-4 space-y-3">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Total Documents:</span>
+                <span className="font-bold">157</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Total Categories:</span>
+                <span className="font-bold">6</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Total Downloads:</span>
+                <span className="font-bold">1,243</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Total Storage:</span>
+                <span className="font-bold">215.3 MB</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">This Month Uploads:</span>
+                <span className="font-bold">23</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Active Users:</span>
+                <span className="font-bold">45</span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </MainLayout>
   );
